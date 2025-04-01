@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CalculateMyDahaj.com - Find Your Marital Worth!</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fff5f7;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #ff6b8b;
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+        
+        .tagline {
+            font-style: italic;
+            margin-top: 5px;
+        }
+        
+        .calculator-form {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .form-section {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #ff6b8b;
+        }
+        
+        .form-section h2 {
+            color: #ff6b8b;
+            margin-top: 0;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .sub-options {
+            margin-left: 20px;
+            padding-left: 20px;
+            border-left: 3px solid #ff6b8b;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+        
+        button {
+            background-color: #ff6b8b;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            display: block;
+            margin: 30px auto;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+        
+        button:hover {
+            background-color: #ff4757;
+            transform: scale(1.05);
+        }
+        
+        .results {
+            display: none;
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .dahaj-value {
+            font-size: 3em;
+            color: #ff6b8b;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        
+        .remarks-box {
+            background-color: #fff0f3;
+            border-left: 5px solid #ff6b8b;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .remark {
+            margin: 10px 0;
+            font-style: italic;
+        }
+        
+        .disclaimer {
+            font-size: 0.8em;
+            color: #777;
+            margin-top: 40px;
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>CalculateMyDahaj.com</h1>
+            <div class="tagline">Calculating your marital worth since 2023!</div>
+        </header>
+        
+        <div class="calculator-form">
+            <form id="dahajForm">
+                <div class="form-section">
+                    <h2>Personal Information</h2>
+                    
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" placeholder="Enter your full name" required>
+                    
+                    <label for="age">Age</label>
+                    <select id="age" required>
+                        <option value="">Select your age</option>
+                        <option value="under18">Under 18</option>
+                        <option value="18-21">18-21</option>
+                        <option value="21-26">21-26</option>
+                        <option value="26-30">26-30</option>
+                        <option value="30-35">30-35</option>
+                        <option value="35plus">35+</option>
+                    </select>
+                    
+                    <label for="income">Annual Income (₹)</label>
+                    <input type="number" id="income" placeholder="Enter your annual income" required>
+                    
+                    <label for="caste">Caste Category</label>
+                    <select id="caste" required>
+                        <option value="">Select your caste category</option>
+                        <option value="general">General</option>
+                        <option value="obc">OBC</option>
+                        <option value="scst">SC/ST</option>
+                    </select>
+                </div>
+                
+                <div class="form-section">
+                    <h2>Marital Status</h2>
+                    <select id="maritalStatus" required>
+                        <option value="">Select marital status</option>
+                        <option value="single">Single</option>
+                        <option value="divorced">Divorced</option>
+                        <option value="widowed">Widowed</option>
+                    </select>
+                </div>
+                
+                <div class="form-section">
+                    <h2>Occupation</h2>
+                    <select id="occupationType" required>
+                        <option value="">Select occupation type</option>
+                        <option value="profession">Profession</option>
+                        <option value="business">Business</option>
+                        <option value="unemployed">Unemployed</option>
+                    </select>
+                    
+                    <div id="professionOptions" class="sub-options hidden">
+                        <label for="profession">Profession Type</label>
+                        <select id="profession">
+                            <option value="">Select your profession</option>
+                            <option value="doctor">Doctor</option>
+                            <option value="engineer">Engineer</option>
+                            <option value="lawyer">Lawyer</option>
+                            <option value="ca">CA/Accountant</option>
+                            <option value="it">IT Professional</option>
+                            <option value="govt">Government Employee</option>
+                            <option value="teacher">Teacher/Professor</option>
+                            <option value="artist">Artist/Creative</option>
+                            <option value="other">Other Professional</option>
+                            <option value="student">"Professional Student"</option>
+                        </select>
+                    </div>
+                    
+                    <div id="businessOptions" class="sub-options hidden">
+                        <label for="businessValue">Total Asset Value</label>
+                        <select id="businessValue">
+                            <option value="">Select asset value</option>
+                            <option value="lt1l">Less than ₹1 lakh</option>
+                            <option value="1to10l">₹1L to ₹10L</option>
+                            <option value="10to25l">₹10L to ₹25L</option>
+                            <option value="25to50l">₹25L to ₹50L</option>
+                            <option value="50to1cr">₹50L to ₹1Cr</option>
+                            <option value="1crplus">₹1Cr+</option>
+                            <option value="10crplus">₹10Cr+</option>
+                        </select>
+                    </div>
+                    
+                    <div id="unemployedOptions" class="sub-options hidden">
+                        <label for="familyIncome">Family Income (₹)</label>
+                        <input type="number" id="familyIncome" placeholder="Enter family annual income">
+                        
+                        <label for="fatherAge">Father's Age</label>
+                        <input type="number" id="fatherAge" placeholder="Enter father's age">
+                        
+                        <label for="fatherOccupation">Father's Occupation</label>
+                        <select id="fatherOccupation">
+                            <option value="">Select father's occupation</option>
+                            <option value="profession">Profession</option>
+                            <option value="business">Business</option>
+                            <option value="retired">Retired</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h2>Lifestyle Factors</h2>
+                    <label for="homeOwnership">Home Ownership</label>
+                    <select id="homeOwnership" required>
+                        <option value="">Select home ownership</option>
+                        <option value="owner">Owner</option>
+                        <option value="ancestral">Ancestral House</option>
+                        <option value="rented">Rented</option>
+                    </select>
+                    
+                    <label for="educationLevel">Education Level</label>
+                    <select id="educationLevel" required>
+                        <option value="">Select education level</option>
+                        <option value="highschool">High School</option>
+                        <option value="bachelors">Bachelor's</option>
+                        <option value="masters">Master's</option>
+                        <option value="phd">PhD</option>
+                        <option value="life">"School of Life"</option>
+                    </select>
+                    
+                    <label for="educationExpenses">Education Expenses (₹ per year)</label>
+                    <input type="number" id="educationExpenses" placeholder="Enter annual education expenses" required>
+                    
+                    <label for="vehicles">Vehicles</label>
+                    <select id="vehicles" required>
+                        <option value="">Select vehicles you own</option>
+                        <option value="car">Car</option>
+                        <option value="bike">Bike</option>
+                        <option value="cycle">Cycle</option>
+                        <option value="none">None ("I walk everywhere proudly")</option>
+                    </select>
+                    
+                    <label for="location">Location</label>
+                    <select id="location" required>
+                        <option value="">Select your location</option>
+                        <option value="urban">Indian - Urban</option>
+                        <option value="rural">Indian - Rural</option>
+                        <option value="abroad">Outside India</option>
+                    </select>
+                </div>
+                
+                <div class="form-section">
+                    <h2>Bonus Questions</h2>
+                    <label for="exCount">Number of Exes</label>
+                    <select id="exCount" required>
+                        <option value="">Select number of exes</option>
+                        <option value="0">0 ("Pure soul")</option>
+                        <option value="1-3">1-3 ("Normal human")</option>
+                        <option value="4-6">4-6 ("Experienced")</option>
+                        <option value="7plus">7+ ("Legend")</option>
+                    </select>
+                </div>
+                
+                <button type="button" id="calculateBtn">CALCULATE MY GROSS DAHAJ VALUE!</button>
+            </form>
+        </div>
+        
+        <div class="results" id="results">
+            <h2>Your Gross Dahaj Value Is:</h2>
+            <div class="dahaj-value" id="dahajValue">₹0</div>
+            
+            <div class="remarks-box">
+                <h3>Remarks on Your Valuation:</h3>
+                <div id="remarksList">
+                    <!-- Remarks will be added here by JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="disclaimer">
+            <p><strong>Disclaimer:</strong> This is purely for entertainment purposes. Marriage is about love, not calculations. (But we all know calculations are fun!)</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show/hide sub-options based on occupation type
+            const occupationType = document.getElementById('occupationType');
+            const professionOptions = document.getElementById('professionOptions');
+            const businessOptions = document.getElementById('businessOptions');
+            const unemployedOptions = document.getElementById('unemployedOptions');
+            
+            occupationType.addEventListener('change', function() {
+                // Hide all options first
+                professionOptions.classList.add('hidden');
+                businessOptions.classList.add('hidden');
+                unemployedOptions.classList.add('hidden');
+                
+                // Show selected option
+                if (this.value === 'profession') {
+                    professionOptions.classList.remove('hidden');
+                } else if (this.value === 'business') {
+                    businessOptions.classList.remove('hidden');
+                } else if (this.value === 'unemployed') {
+                    unemployedOptions.classList.remove('hidden');
+                }
+            });
+            
+            // Calculate button click handler
+            document.getElementById('calculateBtn').addEventListener('click', calculateDahaj);
+        });
+        
+        function formatIndianCurrency(num) {
+            // Convert to string and ensure it ends with 9
+            let str = Math.floor(num).toString();
+            if (str.length === 0) return "0";
+            
+            // Ensure last digit is 9
+            str = str.substring(0, str.length - 1) + "9";
+            
+            // Convert back to number for formatting
+            num = parseInt(str);
+            
+            // Format with Indian comma separators
+            return '₹' + num.toLocaleString('en-IN');
+        }
+        
+        function isBongSurname(name) {
+            const bongSurnames = [
+                'mukherjee', 'chatterjee', 'ganguly', 'bhattacharjee', 'bandyopadhyay', 'chakraborty',
+                'mukherji', 'chatterji', 'banerjee', 'chakraborty', 'ghosh', 'basu', 'sen', 'bose'
+            ];
+            
+            if (!name) return false;
+            
+            const surname = name.trim().toLowerCase().split(' ').pop();
+            return bongSurnames.some(bongName => surname.includes(bongName));
+        }
+        
+        function calculateDahaj() {
+            // Validate form
+            const form = document.getElementById('dahajForm');
+            if (!form.checkValidity()) {
+                alert('Please fill in all required fields!');
+                return;
+            }
+            
+            // Get all form values
+            const name = document.getElementById('name').value;
+            const age = document.getElementById('age').value;
+            const income = parseInt(document.getElementById('income').value) || 0;
+            const caste = document.getElementById('caste').value;
+            const maritalStatus = document.getElementById('maritalStatus').value;
+            const occupationType = document.getElementById('occupationType').value;
+            const profession = document.getElementById('profession').value;
+            const businessValue = document.getElementById('businessValue').value;
+            const familyIncome = parseInt(document.getElementById('familyIncome').value) || 0;
+            const fatherAge = parseInt(document.getElementById('fatherAge').value) || 0;
+            const fatherOccupation = document.getElementById('fatherOccupation').value;
+            const homeOwnership = document.getElementById('homeOwnership').value;
+            const educationLevel = document.getElementById('educationLevel').value;
+            const educationExpenses = parseInt(document.getElementById('educationExpenses').value) || 0;
+            const vehicles = document.getElementById('vehicles').value;
+            const location = document.getElementById('location').value;
+            const exCount = document.getElementById('exCount').value;
+            
+            // Start with base value
+            let dahajValue = 500000; // Base ₹5L
+            
+            // Prepare remarks
+            const remarks = [];
+            
+            // Check for Bengali surname
+            const isBong = isBongSurname(name);
+            if (isBong) {
+                dahajValue += 1000000;
+                remarks.push("Bong premium detected! +₹10L (Bamboo status unlocked)");
+            }
+            
+            // Caste adjustments
+            if (caste === 'general') {
+                dahajValue *= 0.9;
+                remarks.push("General category? 10% deduction (future generations won't get reservations)");
+            } else if (caste === 'obc') {
+                dahajValue *= 1.2;
+                remarks.push("OBC category detected! 20% premium (double benefit factor)");
+            } else if (caste === 'scst') {
+                dahajValue *= 1.15;
+                remarks.push("SC/ST category detected! 15% premium (reservation benefits included)");
+            }
+            
+            // Age adjustments
+            if (age === 'under18') {
+                dahajValue *= 0.1;
+                remarks.push("Under 18? Focus on studies, not marriage!");
+            } else if (age === '18-21') {
+                dahajValue *= 0.8;
+                remarks.push("Young and fresh! But needs more life experience.");
+            } else if (age === '21-26') {
+                dahajValue *= 1.2;
+                remarks.push("Prime marriage age! Value increased.");
+            } else if (age === '26-30') {
+                dahajValue *= 1.5;
+                remarks.push("Established in life. Premium added.");
+            } else if (age === '30-35') {
+                dahajValue *= 1.3;
+                remarks.push("Mature and stable. Good value.");
+            } else if (age === '35plus') {
+                dahajValue *= 0.9;
+                remarks.push("Experience counts, but biological clock ticking deduction applied.");
+            }
+            
+            // Income adjustments
+            if (income > 0) {
+                const incomeBonus = Math.min(income * 0.1, 5000000); // Max ₹50L bonus
+                dahajValue += incomeBonus;
+                remarks.push(`Your income of ₹${income.toLocaleString('en-IN')} adds ₹${incomeBonus.toLocaleString('en-IN')} to your value.`);
+            }
+            
+            // Marital status
+            if (maritalStatus === 'divorced') {
+                dahajValue *= 0.7;
+                remarks.push("Divorced status applies a 30% discount. Experience has its price.");
+            } else if (maritalStatus === 'widowed') {
+                dahajValue *= 0.8;
+                remarks.push("Widowed status applies a 20% discount. Our condolences.");
+            }
+            
+            // Occupation
+            if (occupationType === 'profession') {
+                if (profession === 'doctor') {
+                    dahajValue += 2000000;
+                    remarks.push("Doctor profession premium: +₹20L");
+                } else if (profession === 'engineer') {
+                    dahajValue += 1000000;
+                    remarks.push("Engineer profession premium: +₹10L");
+                } else if (profession === 'lawyer') {
+                    dahajValue += 1500000;
+                    remarks.push("Lawyer profession premium: +₹15L");
+                } else if (profession === 'ca') {
+                    dahajValue += 1800000;
+                    remarks.push("CA/Accountant profession premium: +₹18L");
+                } else if (profession === 'it') {
+                    dahajValue += 1200000;
+                    remarks.push("IT Professional premium: +₹12L");
+                } else if (profession === 'govt') {
+                    dahajValue += 1500000;
+                    remarks.push("Government job stability premium: +₹15L");
+                } else if (profession === 'teacher') {
+                    dahajValue += 800000;
+                    remarks.push("Teaching profession premium: +₹8L");
+                } else if (profession === 'student') {
+                    dahajValue *= 0.5;
+                    remarks.push("'Professional Student'? Focus on graduating first! 50% deduction applied.");
+                }
+            } else if (occupationType === 'business') {
+                if (businessValue === 'lt1l') {
+                    dahajValue += 50000;
+                    remarks.push("Small business adds ₹50K");
+                } else if (businessValue === '1to10l') {
+                    dahajValue += 500000;
+                    remarks.push("Growing business adds ₹5L");
+                } else if (businessValue === '10to25l') {
+                    dahajValue += 1000000;
+                    remarks.push("Established business adds ₹10L");
+                } else if (businessValue === '25to50l') {
+                    dahajValue += 2000000;
+                    remarks.push("Successful business adds ₹20L");
+                } else if (businessValue === '50to1cr') {
+                    dahajValue += 4000000;
+                    remarks.push("Thriving business adds ₹40L");
+                } else if (businessValue === '1crplus') {
+                    dahajValue += 8000000;
+                    remarks.push("Business tycoon premium: +₹80L");
+                } else if (businessValue === '10crplus') {
+                    dahajValue += 20000000;
+                    remarks.push("Industrialist premium: +₹2Cr (We're not worthy!)");
+                }
+            } else if (occupationType === 'unemployed') {
+                if (familyIncome > 0) {
+                    const familyBonus = Math.min(familyIncome * 0.05, 3000000); // Max ₹30L bonus
+                    dahajValue += familyBonus;
+                    remarks.push(`Family income of ₹${familyIncome.toLocaleString('en-IN')} adds ₹${familyBonus.toLocaleString('en-IN')} (silver spoon bonus).`);
+                }
+                
+                if (fatherAge > 60) {
+                    dahajValue *= 0.9;
+                    remarks.push("Father's age over 60 applies 10% deduction (inheritance timing uncertainty).");
+                }
+            }
+            
+            // Home ownership
+            if (homeOwnership === 'owner') {
+                dahajValue += 1000000;
+                remarks.push("Home ownership premium: +₹10L");
+            } else if (homeOwnership === 'ancestral') {
+                dahajValue += 1500000;
+                remarks.push("Ancestral home premium: +₹15L (generational wealth counts)");
+            } else if (homeOwnership === 'rented') {
+                dahajValue -= 300000;
+                remarks.push("Renting applies ₹3L deduction (stability factor).");
+            }
+            
+            // Education
+            if (educationLevel === 'bachelors') {
+                dahajValue += 500000;
+                remarks.push("Bachelor's degree premium: +₹5L");
+            } else if (educationLevel === 'masters') {
+                dahajValue += 800000;
+                remarks.push("Master's degree premium: +₹8L");
+            } else if (educationLevel === 'phd') {
+                dahajValue += 1200000;
+                remarks.push("PhD premium: +₹12L (smart genes!)");
+            } else if (educationLevel === 'life') {
+                dahajValue += 200000;
+                remarks.push("'School of Life' adds ₹2L (street smarts count for something).");
+            }
+            
+            if (educationExpenses > 100000) {
+                const eduBonus = Math.min(educationExpenses * 0.2, 500000);
+                dahajValue += eduBonus;
+                remarks.push(`High education investment adds ₹${eduBonus.toLocaleString('en-IN')} (quality matters).`);
+            }
+            
+            // Vehicles
+            if (vehicles === 'car') {
+                dahajValue += 500000;
+                remarks.push("Car ownership premium: +₹5L");
+            } else if (vehicles === 'bike') {
+                dahajValue += 200000;
+                remarks.push("Bike ownership premium: +₹2L");
+            } else if (vehicles === 'none') {
+                dahajValue -= 100000;
+                remarks.push("No vehicle? ₹1L deduction (how will you go on dates?).");
+            }
+            
+            // Location
+            if (location === 'urban') {
+                dahajValue += 300000;
+                remarks.push("Urban location premium: +₹3L (better prospects)");
+            } else if (location === 'abroad') {
+                dahajValue += 1000000;
+                remarks.push("Outside India premium: +₹10L (NRI bonus!)");
+            }
+            
+            // Exes
+            if (exCount === '0') {
+                dahajValue += 200000;
+                remarks.push("No exes? +₹2L (pure soul bonus)");
+            } else if (exCount === '1-3') {
+                // No change
+                remarks.push("1-3 exes is normal. No adjustment.");
+            } else if (exCount === '4-6') {
+                dahajValue -= 300000;
+                remarks.push("4-6 exes? ₹3L deduction (are you picky or problematic?).");
+            } else if (exCount === '7plus') {
+                dahajValue -= 1000000;
+                remarks.push("7+ exes? ₹10L deduction (legendary, but risky investment).");
+            }
+            
+            // Ensure value doesn't go below zero
+            dahajValue = Math.max(dahajValue, 100000); // Minimum ₹1L
+            
+            // Add some random fluctuation for fun
+            const randomFactor = 0.9 + Math.random() * 0.2; // 90% to 110%
+            dahajValue = Math.round(dahajValue * randomFactor);
+            
+            // Format the value in Indian currency with last digit as 9
+            const formattedValue = formatIndianCurrency(dahajValue);
+            
+            // Display results
+            document.getElementById('dahajValue').textContent = formattedValue;
+            
+            // Display remarks
+            const remarksList = document.getElementById('remarksList');
+            remarksList.innerHTML = '';
+            remarks.forEach(remark => {
+                const p = document.createElement('p');
+                p.className = 'remark';
+                p.textContent = remark;
+                remarksList.appendChild(p);
+            });
+            
+            // Show results
+            document.getElementById('results').style.display = 'block';
+            
+            // Scroll to results
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
