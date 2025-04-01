@@ -142,6 +142,36 @@
             padding-top: 20px;
             border-top: 1px solid #eee;
         }
+        
+        .whatsapp-share {
+            background-color: #25D366;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            margin-top: 20px;
+        }
+        
+        .whatsapp-share img {
+            width: 20px;
+            margin-right: 10px;
+        }
+        
+        .metro-city {
+            display: none;
+        }
+        
+        .sibling-details {
+            display: none;
+        }
+        
+        .country-select {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -170,8 +200,25 @@
                         <option value="35plus">35+</option>
                     </select>
                     
-                    <label for="income">Annual Income (₹)</label>
-                    <input type="number" id="income" placeholder="Enter your annual income" required>
+                    <label for="income">Monthly Income (₹)</label>
+                    <input type="number" id="income" placeholder="Enter your monthly income" required>
+                    
+                    <label for="siblings">Siblings</label>
+                    <select id="siblings" required>
+                        <option value="">Select siblings</option>
+                        <option value="single">Single Child</option>
+                        <option value="1sister">You and 1 sister</option>
+                        <option value="1brother">You and 1 brother</option>
+                        <option value="other">Other</option>
+                    </select>
+                    
+                    <div id="siblingDetails" class="sibling-details hidden">
+                        <label for="brothers">Number of Brothers (00-99)</label>
+                        <input type="number" id="brothers" min="0" max="99" placeholder="Enter number of brothers">
+                        
+                        <label for="sisters">Number of Sisters (00-99)</label>
+                        <input type="number" id="sisters" min="0" max="99" placeholder="Enter number of sisters">
+                    </div>
                     
                     <label for="caste">Caste Category</label>
                     <select id="caste" required>
@@ -212,7 +259,7 @@
                             <option value="it">IT Professional</option>
                             <option value="govt">Government Employee</option>
                             <option value="teacher">Teacher/Professor</option>
-                            <option value="artist">MokTail/BokTail</option>
+                            <option value="artist">Artist/Creative</option>
                             <option value="other">Other Professional</option>
                             <option value="student">"Professional Student"</option>
                         </select>
@@ -233,8 +280,8 @@
                     </div>
                     
                     <div id="unemployedOptions" class="sub-options hidden">
-                        <label for="familyIncome">Family Income (₹)</label>
-                        <input type="number" id="familyIncome" placeholder="Enter family annual income">
+                        <label for="familyIncome">Family Income (₹ per month)</label>
+                        <input type="number" id="familyIncome" placeholder="Enter family monthly income">
                         
                         <label for="fatherAge">Father's Age</label>
                         <input type="number" id="fatherAge" placeholder="Enter father's age">
@@ -271,7 +318,7 @@
                     </select>
                     
                     <label for="educationExpenses">Education Expenses (₹ per year)</label>
-                    <input type="number" id="educationExpenses" placeholder="Enter annual education expenses" required>
+                    <input type="number" id="educationExpenses" placeholder="Enter annual education expenses" value="0">
                     
                     <label for="vehicles">Vehicles</label>
                     <select id="vehicles" required>
@@ -289,6 +336,30 @@
                         <option value="rural">Indian - Rural</option>
                         <option value="abroad">Outside India</option>
                     </select>
+                    
+                    <div id="metroCity" class="sub-options hidden">
+                        <label for="metroCityOption">Do you live in Kolkata, Mumbai, Delhi, or Chennai?</label>
+                        <select id="metroCityOption">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </div>
+                    
+                    <div id="countrySelect" class="sub-options hidden">
+                        <label for="country">Select Country</label>
+                        <select id="country">
+                            <option value="">Select your country</option>
+                            <option value="us">United States</option>
+                            <option value="uk">United Kingdom</option>
+                            <option value="canada">Canada</option>
+                            <option value="germany">Germany</option>
+                            <option value="france">France</option>
+                            <option value="italy">Italy</option>
+                            <option value="japan">Japan</option>
+                            <option value="bangladesh">Bangladesh</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
                 </div>
                 
                 <div class="form-section">
@@ -310,6 +381,7 @@
         <div class="results" id="results">
             <h2>Your Gross Dahaj Value Is:</h2>
             <div class="dahaj-value" id="dahajValue">₹0</div>
+            <div class="dahaj-value" id="dahajValueUSD" style="display: none;"></div>
             
             <div class="remarks-box">
                 <h3>Remarks on Your Valuation:</h3>
@@ -317,6 +389,11 @@
                     <!-- Remarks will be added here by JavaScript -->
                 </div>
             </div>
+            
+            <button class="whatsapp-share" id="whatsappShare">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+                Share on WhatsApp
+            </button>
         </div>
         
         <div class="disclaimer">
@@ -348,8 +425,55 @@
                 }
             });
             
+            // Show/hide sibling details
+            const siblings = document.getElementById('siblings');
+            const siblingDetails = document.getElementById('siblingDetails');
+            
+            siblings.addEventListener('change', function() {
+                if (this.value === 'other') {
+                    siblingDetails.classList.remove('hidden');
+                } else {
+                    siblingDetails.classList.add('hidden');
+                }
+            });
+            
+            // Show/hide location options
+            const location = document.getElementById('location');
+            const metroCity = document.getElementById('metroCity');
+            const countrySelect = document.getElementById('countrySelect');
+            
+            location.addEventListener('change', function() {
+                metroCity.classList.add('hidden');
+                countrySelect.classList.add('hidden');
+                
+                if (this.value === 'urban') {
+                    metroCity.classList.remove('hidden');
+                } else if (this.value === 'abroad') {
+                    countrySelect.classList.remove('hidden');
+                }
+            });
+            
+            // Initialize education expenses with 0 if blank
+            const educationExpenses = document.getElementById('educationExpenses');
+            educationExpenses.addEventListener('blur', function() {
+                if (this.value === '') {
+                    this.value = '0';
+                }
+            });
+            
+            // Initialize monthly income with 0 if blank
+            const income = document.getElementById('income');
+            income.addEventListener('blur', function() {
+                if (this.value === '') {
+                    this.value = '0';
+                }
+            });
+            
             // Calculate button click handler
             document.getElementById('calculateBtn').addEventListener('click', calculateDahaj);
+            
+            // WhatsApp share button
+            document.getElementById('whatsappShare').addEventListener('click', shareOnWhatsApp);
         });
         
         function formatIndianCurrency(num) {
@@ -367,9 +491,14 @@
             return '₹' + num.toLocaleString('en-IN');
         }
         
+        function formatUSCurrency(num) {
+            num = Math.floor(num);
+            return '$' + num.toLocaleString('en-US');
+        }
+        
         function isBongSurname(name) {
             const bongSurnames = [
-                'mukherjee', 'chatterjee', 'ganguly', 'bhattacharjee', 'bandyopadhyay', 'chakraborty',
+                'mukherjee', 'chatterjee', 'ganguly', 'bhattacharjee', 'bandyopadhyay',
                 'mukherji', 'chatterji', 'banerjee', 'chakraborty', 'ghosh', 'basu', 'sen', 'bose'
             ];
             
@@ -377,6 +506,15 @@
             
             const surname = name.trim().toLowerCase().split(' ').pop();
             return bongSurnames.some(bongName => surname.includes(bongName));
+        }
+        
+        function shareOnWhatsApp() {
+            const name = document.getElementById('name').value || "Someone";
+            const amount = document.getElementById('dahajValue').textContent;
+            const usdAmount = document.getElementById('dahajValueUSD').textContent;
+            const text = `${name}'s Total Dahaj is ${amount}${usdAmount ? ' (' + usdAmount + ')' : ''} - Check your score at https://samridhya01.github.io/calculatemydahaj/`;
+            const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+            window.open(url, '_blank');
         }
         
         function calculateDahaj() {
@@ -391,6 +529,9 @@
             const name = document.getElementById('name').value;
             const age = document.getElementById('age').value;
             const income = parseInt(document.getElementById('income').value) || 0;
+            const siblings = document.getElementById('siblings').value;
+            const brothers = parseInt(document.getElementById('brothers').value) || 0;
+            const sisters = parseInt(document.getElementById('sisters').value) || 0;
             const caste = document.getElementById('caste').value;
             const maritalStatus = document.getElementById('maritalStatus').value;
             const occupationType = document.getElementById('occupationType').value;
@@ -404,10 +545,14 @@
             const educationExpenses = parseInt(document.getElementById('educationExpenses').value) || 0;
             const vehicles = document.getElementById('vehicles').value;
             const location = document.getElementById('location').value;
+            const metroCity = document.getElementById('metroCityOption').value;
+            const country = document.getElementById('country').value;
             const exCount = document.getElementById('exCount').value;
             
             // Start with base value
             let dahajValue = 500000; // Base ₹5L
+            let isInternational = false;
+            let countryPremium = 1;
             
             // Prepare remarks
             const remarks = [];
@@ -417,6 +562,45 @@
             if (isBong) {
                 dahajValue += 1000000;
                 remarks.push("Bong premium detected! +₹10L (Bamboo status unlocked)");
+            }
+            
+            // Handle zero income cases
+            if (income === 0 && (occupationType !== 'unemployed' || familyIncome <= 1000)) {
+                dahajValue = 1;
+                remarks.push("Zero income detected! Gross Dahaj set to ₹1 (unless unemployed with family income)");
+            } else {
+                // Convert monthly income to annual for calculations
+                const annualIncome = income * 12;
+                
+                // Income adjustments
+                if (annualIncome > 0) {
+                    const incomeBonus = Math.min(annualIncome * 0.1, 5000000); // Max ₹50L bonus
+                    dahajValue += incomeBonus;
+                    remarks.push(`Your annual income of ₹${(annualIncome).toLocaleString('en-IN')} adds ₹${incomeBonus.toLocaleString('en-IN')} to your value.`);
+                }
+            }
+            
+            // Siblings adjustments
+            if (siblings === 'single') {
+                dahajValue += 500000;
+                remarks.push("Single child premium: +₹5L (future family wealth inheritance)");
+            } else if (siblings === '1sister') {
+                dahajValue += 200000;
+                remarks.push("1 sister bonus: +₹2L (cute friend and potential helping hand)");
+            } else if (siblings === '1brother') {
+                dahajValue -= 300000;
+                remarks.push("1 brother deduction: -₹3L (potential wealth division)");
+            } else if (siblings === 'other') {
+                const brotherDeduction = brothers * 300000;
+                const sisterBonus = sisters * 200000;
+                dahajValue = dahajValue - brotherDeduction + sisterBonus;
+                
+                if (brothers > 0) {
+                    remarks.push(`${brothers} brother(s) deduction: -₹${(brotherDeduction).toLocaleString('en-IN')}`);
+                }
+                if (sisters > 0) {
+                    remarks.push(`${sisters} sister(s) bonus: +₹${(sisterBonus).toLocaleString('en-IN')}`);
+                }
             }
             
             // Caste adjustments
@@ -450,13 +634,6 @@
             } else if (age === '35plus') {
                 dahajValue *= 0.9;
                 remarks.push("Experience counts, but biological clock ticking deduction applied.");
-            }
-            
-            // Income adjustments
-            if (income > 0) {
-                const incomeBonus = Math.min(income * 0.1, 5000000); // Max ₹50L bonus
-                dahajValue += incomeBonus;
-                remarks.push(`Your income of ₹${income.toLocaleString('en-IN')} adds ₹${incomeBonus.toLocaleString('en-IN')} to your value.`);
             }
             
             // Marital status
@@ -520,9 +697,9 @@
                 }
             } else if (occupationType === 'unemployed') {
                 if (familyIncome > 0) {
-                    const familyBonus = Math.min(familyIncome * 0.05, 3000000); // Max ₹30L bonus
+                    const familyBonus = Math.min(familyIncome * 12 * 0.05, 3000000); // Max ₹30L bonus
                     dahajValue += familyBonus;
-                    remarks.push(`Family income of ₹${familyIncome.toLocaleString('en-IN')} adds ₹${familyBonus.toLocaleString('en-IN')} (silver spoon bonus).`);
+                    remarks.push(`Family income of ₹${(familyIncome*12).toLocaleString('en-IN')} adds ₹${familyBonus.toLocaleString('en-IN')} (silver spoon bonus).`);
                 }
                 
                 if (fatherAge > 60) {
@@ -580,9 +757,57 @@
             if (location === 'urban') {
                 dahajValue += 300000;
                 remarks.push("Urban location premium: +₹3L (better prospects)");
+                
+                if (metroCity === 'yes') {
+                    dahajValue += 700000;
+                    remarks.push("Metro city bonus: +₹7L (luxury lifestyle included)");
+                }
+            } else if (location === 'rural') {
+                dahajValue -= 200000;
+                remarks.push("Rural location deduction: -₹2L (limited opportunities)");
             } else if (location === 'abroad') {
-                dahajValue += 1000000;
-                remarks.push("Outside India premium: +₹10L (NRI bonus!)");
+                isInternational = true;
+                
+                // Country-specific premiums
+                switch(country) {
+                    case 'us':
+                        countryPremium = 2.5;
+                        remarks.push("USA premium: 150% increase (maximum premium)");
+                        break;
+                    case 'uk':
+                        countryPremium = 2.0;
+                        remarks.push("UK premium: 100% increase");
+                        break;
+                    case 'canada':
+                        countryPremium = 2.2;
+                        remarks.push("Canada premium: 120% increase");
+                        break;
+                    case 'germany':
+                        countryPremium = 1.8;
+                        remarks.push("Germany premium: 80% increase");
+                        break;
+                    case 'france':
+                        countryPremium = 1.7;
+                        remarks.push("France premium: 70% increase");
+                        break;
+                    case 'italy':
+                        countryPremium = 1.6;
+                        remarks.push("Italy premium: 60% increase");
+                        break;
+                    case 'japan':
+                        countryPremium = 1.9;
+                        remarks.push("Japan premium: 90% increase");
+                        break;
+                    case 'bangladesh':
+                        countryPremium = 0.5;
+                        remarks.push("Bangladesh deduction: 50% reduction (economic conditions)");
+                        break;
+                    default:
+                        countryPremium = 1.5;
+                        remarks.push("Other country premium: 50% increase (standard international)");
+                }
+                
+                dahajValue *= countryPremium;
             }
             
             // Exes
@@ -601,7 +826,7 @@
             }
             
             // Ensure value doesn't go below zero
-            dahajValue = Math.max(dahajValue, 100000); // Minimum ₹1L
+            dahajValue = Math.max(dahajValue, 1); // Minimum ₹1
             
             // Add some random fluctuation for fun
             const randomFactor = 0.9 + Math.random() * 0.2; // 90% to 110%
@@ -612,6 +837,15 @@
             
             // Display results
             document.getElementById('dahajValue').textContent = formattedValue;
+            
+            // Display USD value if international
+            if (isInternational) {
+                const usdValue = Math.round(dahajValue / 80); // Convert to USD
+                document.getElementById('dahajValueUSD').textContent = formatUSCurrency(usdValue);
+                document.getElementById('dahajValueUSD').style.display = 'block';
+            } else {
+                document.getElementById('dahajValueUSD').style.display = 'none';
+            }
             
             // Display remarks
             const remarksList = document.getElementById('remarksList');
